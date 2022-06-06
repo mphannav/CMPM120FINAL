@@ -15,7 +15,7 @@ class Scene1 extends Phaser.Scene {
         this.load.audio('dead', './assets/dead.wav');
         //this.load.spritesheet('character', './assets/slug.png', {frameWidth: 142, frameHeight: 119, startFrame: 0, endFrame: 3});
         this.load.spritesheet('squirrel', './assets/squirrel.png', {frameWidth: 150, frameHeight: 100});
-        this.load.spritesheet('bird', './assets/bird.png', {frameWidth: 102, frameHeight: 88, startFrame: 0, endFrame: 1});
+        this.load.spritesheet('bird', './assets/bird.png', {frameWidth: 102, frameHeight: 88});
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
@@ -77,8 +77,9 @@ class Scene1 extends Phaser.Scene {
 
         this.anims.create({
             key: 'enemy1',
-            frames: this.anims.generateFrameNames('squirrel', {start: 0, end: 2}),
-            frameRate:10
+            frames: this.anims.generateFrameNames('squirrel', {start: 0, end: 1}),
+            frameRate:10,
+            repeat: -1
         });
         // this.anims.create({
         //     key: 'sluggy',
@@ -88,7 +89,9 @@ class Scene1 extends Phaser.Scene {
 
         this.anims.create({
             key: 'bird_anim',
-            frames: this.anims.generateFrameNames('bird', {start: 0, end: 1})
+            frames: this.anims.generateFrameNames('bird', {start: 0, end: 1}),
+            frameRate:10,
+            repeat: -1
         });
 
         //score
