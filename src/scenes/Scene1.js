@@ -6,7 +6,7 @@ class Scene1 extends Phaser.Scene {
     preload() {
         this.load.image('background', './assets/background.jpg');
         this.load.image('road', './assets/road.png');
-        this.load.image('block', './assets/block.png');
+        //this.load.image('block', './assets/block.png');
         this.load.image('vblock2', './assets/verticalblock2.png');
         this.load.image('bullet', './assets/bullet.png');
         //this.load.image('bird', './assets/bird.png');
@@ -17,6 +17,8 @@ class Scene1 extends Phaser.Scene {
         //this.load.spritesheet('character', './assets/slug.png', {frameWidth: 142, frameHeight: 119, startFrame: 0, endFrame: 3});
         this.load.spritesheet('squirrel', './assets/squirrel.png', {frameWidth: 150, frameHeight: 100});
         this.load.spritesheet('bird', './assets/bird.png', {frameWidth: 102, frameHeight: 88});
+        this.load.spritesheet('slug', './assets/sluggy.png', {frameWidth: 127, frameHeight: 106});
+        this.load.spritesheet('block', './assets/block_anim.png', {frameWidth: 128, frameHeight: 75});
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
@@ -78,7 +80,7 @@ class Scene1 extends Phaser.Scene {
         //camera follows player
         this.cameras.main.setBounds(0, 0, this.background.displayWidth, this.background.displayHeight);
         this.cameras.main.startFollow(this.character);
-        //this.cameras.main.setZoom(1.2);   
+        this.cameras.main.setZoom(1.2);   
         
         //this.weapon.trackSprite(this.character, 0, 0, true);
         //this.fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
@@ -96,15 +98,23 @@ class Scene1 extends Phaser.Scene {
             frameRate:10,
             repeat: -1
         });
-        // this.anims.create({
-        //     key: 'sluggy',
-        //     frames: this.anims.generateFrameNames('slug', {start: 1, end: 4}),
-        //     frameRate:10
-        // });
+        this.anims.create({
+            key: 'sluggy',
+            frames: this.anims.generateFrameNames('slug', {start: 0, end: 1}),
+            frameRate:10,
+            repeat: -1
+        });
 
         this.anims.create({
             key: 'bird_anim',
             frames: this.anims.generateFrameNames('bird', {start: 0, end: 1}),
+            frameRate:10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'blocks',
+            frames: this.anims.generateFrameNames('block', {start: 0, end: 2}),
             frameRate:10,
             repeat: -1
         });
@@ -137,20 +147,22 @@ class Scene1 extends Phaser.Scene {
             //game.physics.arcade.collide(this.character, this.block, this.scene.start('over'));
         }
         else if (2 == this.random){
-            this.block = this.physics.add.sprite(1500, 650, 'vblock2').setScale(0.8);
-            this.block.body.setVelocityX(- this.level);
+            this.block = this.physics.add.sprite(0, 650, 'slug').setScale(0.8);
+            this.block.setFlip(true, false);
+            this.block.body.setVelocityX(+ this.level);
             this.block.body.allowGravity = false
             this.block.body.immovable = true;
             this.physics.add.collider(this.character, this.block, this.hit, null, this);
             //this.physics.add.collide()
-            //this.block.anims.play('sluggy', true);
+            this.block.anims.play('sluggy', true);
         }
         else if (3 == this.random){
-            this.block = this.physics.add.sprite(600, 1200, 'block').setScale(0.8);
+            this.block = this.physics.add.sprite(350, 0, 'block').setScale(0.8);
             this.block.body.setVelocityY(+ this.level);
             this.block.body.allowGravity = false;
             this.block.body.immovable = true;
             this.physics.add.collider(this.character, this.block, this.hit, null, this);
+            this.block.anims.play('blocks', true);
         }
         else if(4 == this.random){
             this.block = this.physics.add.sprite(0, 200, 'bird').setScale(0.6);
