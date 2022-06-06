@@ -3,7 +3,7 @@ class over extends Phaser.Scene {
         super("over");
     }
     preload() {
-        this.load.image('over', './assets/over.png');
+        this.load.image('over', './assets/over.jpg');
     }
     create() {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);

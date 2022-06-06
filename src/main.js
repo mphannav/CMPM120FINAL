@@ -11,8 +11,8 @@ const SCALE = 0.5;
 
 let config = {
     type: Phaser.WEBGL,
-    width: 1280,
-    height: 720,
+    width: 1280, //1280
+    height: 720, //720
     physics: {
         default: 'arcade',
         arcade: {
