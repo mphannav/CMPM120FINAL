@@ -14,18 +14,20 @@ class Scene1 extends Phaser.Scene {
         this.load.image('platform', './assets/platform.png');
         this.load.audio('jump', './assets/jump.wav');
         this.load.audio('dead', './assets/dead.wav');
+        this.load.audio('collect', './assets/collect.wav');
         //this.load.spritesheet('character', './assets/slug.png', {frameWidth: 142, frameHeight: 119, startFrame: 0, endFrame: 3});
         this.load.spritesheet('squirrel', './assets/squirrel.png', {frameWidth: 150, frameHeight: 100});
         this.load.spritesheet('bird', './assets/bird.png', {frameWidth: 102, frameHeight: 88});
         this.load.spritesheet('slug', './assets/sluggy.png', {frameWidth: 127, frameHeight: 106});
         this.load.spritesheet('block', './assets/block_anim.png', {frameWidth: 128, frameHeight: 75});
+        this.load.spritesheet('coin', './assets/coin.png', {frameWidth: 77, frameHeight: 75});
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     }
 
     create() {
-        this.level = 370; 
+        this.level = 350; 
         this.gamespeed = 3;
         this.ACCELERATION = 1500;
         this.JUMP_VELOCITY = -700;
@@ -80,7 +82,7 @@ class Scene1 extends Phaser.Scene {
         //camera follows player
         this.cameras.main.setBounds(0, 0, this.background.displayWidth, this.background.displayHeight);
         this.cameras.main.startFollow(this.character);
-        this.cameras.main.setZoom(1.2);   
+        //this.cameras.main.setZoom(1.2);   
         
         //this.weapon.trackSprite(this.character, 0, 0, true);
         //this.fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
@@ -116,6 +118,13 @@ class Scene1 extends Phaser.Scene {
             key: 'blocks',
             frames: this.anims.generateFrameNames('block', {start: 0, end: 2}),
             frameRate:10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'coined',
+            frames: this.anims.generateFrameNames('coin', {start: 0, end: 2}),
+            frameRate:5,
             repeat: -1
         });
 
@@ -182,6 +191,23 @@ class Scene1 extends Phaser.Scene {
             this.physics.add.collider(this.character, this.block, this.hit, null, this);
             this.block.anims.play('bird_anim', true);
         }
+        else if (6 == this.random){
+            this.block = this.physics.add.sprite(950, 0, 'block').setScale(0.8);
+            this.block.body.setVelocityY(+ this.level);
+            this.block.body.allowGravity = false;
+            this.block.body.immovable = true;
+            this.physics.add.collider(this.character, this.block, this.hit, null, this);
+            this.block.anims.play('blocks', true);
+        }
+        else if (7 == this.random){
+            this.block = this.physics.add.sprite(0, 0, 'block').setScale(0.6);
+            this.block.body.setVelocityY(+ 150);
+            this.block.body.setVelocityX(+ 150);
+            this.block.body.allowGravity = false;
+            this.block.body.immovable = true;
+            this.physics.add.collider(this.character, this.block, this.addscore, null, this);
+            this.block.anims.play('coined', true);
+        }
         // check keyboard input 
         if(cursors.left.isDown) {
             this.character.body.setAccelerationX(-this.ACCELERATION);
@@ -218,8 +244,17 @@ class Scene1 extends Phaser.Scene {
         //if(this.character.body.touching.block)//|| this.character.body.touching.left)
     }
     hit(character, block)
-        {
+    {
         this.scene.start('over');
         this.sound.play('dead'); 
-        }
+    }
+    addscore(character, block)
+    {
+        block.destroy();
+        this.sound.play('collect'); 
+        this.score += 1;
+        this.scoreText.setText('Score: ' + this.score);
+        //this.scene.start('over');
+        //this.sound.play('dead'); 
+    }
 }
