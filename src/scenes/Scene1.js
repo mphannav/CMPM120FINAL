@@ -8,6 +8,7 @@ class Scene1 extends Phaser.Scene {
         this.load.image('road', './assets/road.png');
         this.load.image('block', './assets/block.png');
         this.load.image('vblock2', './assets/verticalblock2.png');
+        this.load.image('bullet', './assets/bullet.png');
         //this.load.image('bird', './assets/bird.png');
         this.load.image('character', './assets/1.png');
         this.load.image('platform', './assets/platform.png');
@@ -26,13 +27,20 @@ class Scene1 extends Phaser.Scene {
         this.gamespeed = 3;
         this.ACCELERATION = 1500;
         this.JUMP_VELOCITY = -700;
-        this.MAX_JUMPS = 1;
+        this.MAX_JUMPS = 2;
         this.DRAG = 600;
         this.MAX_X_VEL = 500;   // pixels/second
         this.MAX_Y_VEL = 5000;
         this.physics.world.gravity.y = 2600;
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         this.block;
+        //this.weapon;
+        
+        //this.weapon = physics.add.weapon(30, 'bullet');
+        //this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        //this,weapon.bulletSpeed = 600;
+        //this.weapon.fireRate = 100;
+        
         //invisible platform
         this.ground = this.physics.add.sprite(0, game.config.height - 30, 'road').setOrigin(0,0);
 
@@ -61,13 +69,20 @@ class Scene1 extends Phaser.Scene {
         this.character = this.physics.add.sprite(600 , 600, 'character').setScale(0.3);
         this.character.setMaxVelocity(this.MAX_X_VEL, this.MAX_Y_VEL);
         this.character.setCollideWorldBounds(true);
+        
+        //this.weapon = this.physics.add.sprite(600 , 600, 'bullet');
+        //this.weapon.trackSprite(this.character, 0, 0, true);
+        //this.weapon.main.startFollow(this.character);
         cursors = this.input.keyboard.createCursorKeys();
 
         //camera follows player
         this.cameras.main.setBounds(0, 0, this.background.displayWidth, this.background.displayHeight);
         this.cameras.main.startFollow(this.character);
         //this.cameras.main.setZoom(1.2);   
-
+        
+        //this.weapon.trackSprite(this.character, 0, 0, true);
+        //this.fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+        
         this.physics.add.collider(this.character, this.ground);
         this.physics.add.collider(this.character, this.platform);
         this.physics.add.collider(this.character, this.platform1);
@@ -110,8 +125,7 @@ class Scene1 extends Phaser.Scene {
         
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.start('Scene1');
-        }
-        
+        }  
         this.random = Phaser.Math.RND.integerInRange(1, 450);
         if(1 == this.random){
             this.block = this.physics.add.sprite(1500, 670, 'squirrel').setScale(0.6);
@@ -132,9 +146,9 @@ class Scene1 extends Phaser.Scene {
             //this.block.anims.play('sluggy', true);
         }
         else if (3 == this.random){
-            this.block = this.physics.add.sprite(1500, 660, 'block').setScale(0.8);
-            this.block.body.setVelocityX(- this.level);
-            this.block.body.allowGravity = false
+            this.block = this.physics.add.sprite(600, 1200, 'block').setScale(0.8);
+            this.block.body.setVelocityY(+ this.level);
+            this.block.body.allowGravity = false;
             this.block.body.immovable = true;
             this.physics.add.collider(this.character, this.block, this.hit, null, this);
         }
@@ -142,6 +156,15 @@ class Scene1 extends Phaser.Scene {
             this.block = this.physics.add.sprite(0, 200, 'bird').setScale(0.6);
             this.block.setFlip(true, false);
             this.block.body.setVelocityX(+ this.level);
+            this.block.body.allowGravity = false
+            this.block.body.immovable = true;
+            this.physics.add.collider(this.character, this.block, this.hit, null, this);
+            this.block.anims.play('bird_anim', true);
+        }
+        else if(5 == this.random){
+            this.block = this.physics.add.sprite(1500, 350, 'bird').setScale(0.6);
+            //this.block.setFlip(true, false);
+            this.block.body.setVelocityX(- this.level);
             this.block.body.allowGravity = false
             this.block.body.immovable = true;
             this.physics.add.collider(this.character, this.block, this.hit, null, this);
