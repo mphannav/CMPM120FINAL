@@ -27,7 +27,7 @@ class Scene1 extends Phaser.Scene {
     }
 
     create() {
-        this.level = 350; 
+        this.level = 300; 
         this.gamespeed = 3;
         this.ACCELERATION = 1500;
         this.JUMP_VELOCITY = -700;
@@ -253,7 +253,7 @@ class Scene1 extends Phaser.Scene {
         block.destroy();
         this.sound.play('collect'); 
         this.score += 1;
-        this.scoreText.setText('Score: ' + this.score);
+        this.scoreText.setText('Coins: ' + this.score).setOrigin(-0.5, -0.5);
         //this.scene.start('over');
         //this.sound.play('dead'); 
     }
