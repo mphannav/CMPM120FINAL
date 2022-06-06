@@ -1,11 +1,11 @@
 //Michael Phannavong
 //Ching Kei Yiu
 //Yan Yang
-//Game Title: Slug Rush
-//Completed: 5/9/22
-//Creative Tilt: We tried doing a forest theme with the main character being a slug. We added "jungle-like" copyright free music in hopes to match that theme of being chases or running
-//through the wild. We also implemented a fast fall control in hopes of letting the character manuvere better. We also implemented multiple jumps but decided that would make the game too easy 
-//so we opted out to just allowing one jump. The code was made in a way that it that settings could easily be adjusted if wanted to.
+//Game Title: Chaotic Path
+//Completed: 6/6/22
+//Creative Tilt: We tried doing a forest jungle theme with the main character as a student who got lost in the woods. We again added some copy-right free music to add to the intensity of the game
+//This time around we worked on making the movement of the character to feel smooth by adjusting drag friction and adding double jump. There is also collision with the coins that can make 
+//interesting occurances happen such as resetting your jump.
 let cursors;
 const SCALE = 0.5;
 
