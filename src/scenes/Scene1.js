@@ -21,7 +21,8 @@ class Scene1 extends Phaser.Scene {
         this.load.spritesheet('slug', './assets/sluggy.png', {frameWidth: 127, frameHeight: 106});
         this.load.spritesheet('block', './assets/block_anim.png', {frameWidth: 128, frameHeight: 75});
         this.load.spritesheet('coin', './assets/coin.png', {frameWidth: 77, frameHeight: 75});
-        this.load.spritesheet('guyjump', './assets/1_jump.png', {frameWidth: 105, frameHeight: 187});
+        this.load.spritesheet('guyjump', './assets/1_jump.png', {frameWidth: 105, frameHeight: 188});
+        this.load.spritesheet('guyrun', './assets/1_run.png', {frameWidth: 91, frameHeight: 188});
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
@@ -119,7 +120,12 @@ class Scene1 extends Phaser.Scene {
             frameRate:10,
             repeat: -1
         });
-
+        this.anims.create({
+            key: 'running',
+            frames: this.anims.generateFrameNames('guyrun', {start: 0, end: 1}),
+            frameRate:10,
+            repeat: -1
+        });
         this.anims.create({
             key: 'blocks',
             frames: this.anims.generateFrameNames('block', {start: 0, end: 2}),
@@ -236,11 +242,11 @@ class Scene1 extends Phaser.Scene {
         if(cursors.left.isDown) {
             this.character.body.setAccelerationX(-this.ACCELERATION);
             this.character.setFlip(true, false);
-            //this.character.anims.play('run', true);
+            this.character.anims.play('running', true);
         } else if(cursors.right.isDown) {
             this.character.body.setAccelerationX(this.ACCELERATION);
             this.character.resetFlip();
-            //this.character.anims.play('run', true);
+            this.character.anims.play('running', true);
         } else if(cursors.down.isDown) {
             this.physics.world.gravity.y = 20000; 
         } else {
@@ -280,6 +286,7 @@ class Scene1 extends Phaser.Scene {
         this.sound.play('collect'); 
         this.score += 1;
         this.scoreText.setText('COINS: ' + this.score);
+        //this.character.body.setDragX(0);
         //this.scene.start('over');
         //this.sound.play('dead'); 
     }
